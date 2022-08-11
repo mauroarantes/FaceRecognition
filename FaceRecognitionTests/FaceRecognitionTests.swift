@@ -9,25 +9,40 @@ import XCTest
 @testable import FaceRecognition
 
 class FaceRecognitionTests: XCTestCase {
+    
+    var viewController: ViewController!
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    override func setUp() {
+        viewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController() as? ViewController
     }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    
+    func testFaceCount_invalidPicture_countIsZero() {
+        //given
+        let image = "photo"
+        
+        //when
+        let fc = viewController.faceCount(image: image)
+        //then
+        XCTAssertEqual(fc, 0)
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    
+    func testFaceCount_Sample1_countIsOne() {
+        //given
+        let image = "sample1"
+        
+        //when
+        let fc = viewController.faceCount(image: image)
+        //then
+        XCTAssertEqual(fc, 1)
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    
+    func testFaceCount_Sample2_countIsEight() {
+        //given
+        let image = "sample2"
+        
+        //when
+        let fc = viewController.faceCount(image: image)
+        //then
+        XCTAssertEqual(fc, 8)
     }
-
 }

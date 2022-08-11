@@ -13,8 +13,30 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+    }
+    
+    @IBOutlet weak var b1: UIButton!
+    @IBOutlet weak var b2: UIButton!
+    
+    @IBAction func a1(_ sender: Any) {
+        if let view = view.viewWithTag(100) {
+            view.removeFromSuperview()
+        }
+        let fc = faceCount(image: "sample1")
+        print("Face count: \(fc)")
+    }
+    
+    @IBAction func a2(_ sender: Any) {
+        if let view = view.viewWithTag(100) {
+            view.removeFromSuperview()
+        }
+        let fc = faceCount(image: "sample2")
+        print("Face count: \(fc)")
+    }
+    
+    func faceCount(image: String) -> Int {
         
-        guard let image = UIImage(named: "sample1") else { return }
+        guard let image = UIImage(named: image) else { return 0 }
         let imageView = UIImageView(image: image)
         
         let scaledHeight = view.frame.width / image.size.width * image.size.height
@@ -22,6 +44,7 @@ class ViewController: UIViewController {
         imageView.contentMode = .scaleAspectFit
         imageView.frame = CGRect(x: 0, y: 50, width: view.frame.width, height: scaledHeight)
         imageView.backgroundColor = .orange
+        imageView.tag = 100
         
         view.addSubview(imageView)
         
@@ -32,10 +55,7 @@ class ViewController: UIViewController {
                 return
             }
             
-//            print(req)
-            
             req.results?.forEach({ res in
-//                print(res)
                 
                 guard let faceObservation = res as? VNFaceObservation else { return }
                 
@@ -54,7 +74,7 @@ class ViewController: UIViewController {
             })
         }
         
-        guard let cgImage = image.cgImage else { return }
+        guard let cgImage = image.cgImage else { return 0 }
         let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
         do {
             try handler.perform([request])
@@ -62,8 +82,7 @@ class ViewController: UIViewController {
         } catch let reqErr {
             print("Failed to perform request:", reqErr)
         }
+        return request.results?.count ?? 0
     }
-
-
 }
 
